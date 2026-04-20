@@ -1,9 +1,19 @@
-import React from "react";
+"use client";
+import { Button } from "../shared/ui/Button/button";
+import Link from "next/link";
 
-type Props = {};
+// type Props = {};
 
-const NotFoundPage = (props: Props) => {
-  return <div>404 not-found</div>;
+const NotFoundPage = () => {
+  return (
+    <div>
+      404 not-found
+      <Link href={"/"}>
+        {" "}
+        <Button>Back to main</Button>
+      </Link>
+    </div>
+  );
 };
 
 export default NotFoundPage;

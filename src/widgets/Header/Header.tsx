@@ -60,8 +60,12 @@ export function Header({ user }: Props) {
             </div>
           ) : (
             <div className="flex gap-2">
-              <Button variant={"outline"}>Log in</Button>
-              <Button>Sign up</Button>
+              <Link href={"/auth/login"}>
+                <Button variant={"outline"}>Log in</Button>
+              </Link>
+              <Link href={"/auth/registration"}>
+                <Button>Sign up</Button>
+              </Link>
             </div>
           )}
         </div>
