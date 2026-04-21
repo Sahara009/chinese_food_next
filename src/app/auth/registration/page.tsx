@@ -1,4 +1,5 @@
 "use client";
+
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@/src/shared/ui/Button/button";
 import { Field, FieldGroup, FieldLabel } from "@/src/shared/ui/Fields/field";
@@ -6,6 +7,8 @@ import { Input } from "@/src/shared/ui/Input/input";
 import { FormSchema, formSchema } from "@/src/shared/config/zod_schema";
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { registerApi } from "@/src/features/auth/register";
+// import { prisma } from "@/src/shared/utils/prisma";
 
 // TODO: декомпозировать и поменять язык
 
@@ -20,8 +23,9 @@ const RegisterPage = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FormSchema> = async (data) => {
+    const res = await registerApi(data);
+    console.log(res);
     reset();
   };
 
