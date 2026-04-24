@@ -15,3 +15,9 @@ export const formSchema = z
   });
 
 export type FormSchema = z.infer<typeof formSchema>;
+
+export const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+});
+export type FormSchemaLogin = z.infer<typeof loginSchema>;

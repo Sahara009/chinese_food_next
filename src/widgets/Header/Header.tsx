@@ -15,9 +15,12 @@ type User = {
 type Props = {
   user: User | null;
 };
-
+console.log(process.env.DATABASE_URL);
 export function Header({ user }: Props) {
   const pathname = usePathname();
+
+  // const session = await auth();
+  // if (session) redirect("/auth/login");
 
   return (
     <header className="border-b">

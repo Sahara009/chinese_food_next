@@ -1,7 +1,9 @@
 "use server";
 
-import { prisma } from "@/src/shared/utils/prisma";
+import { prisma } from "@/server/prisma";
 import { authFormData } from "./types/types";
+
+console.log(process.env.DATABASE_URL);
 
 export async function registerApi(dataUser: authFormData) {
   const { email, password } = dataUser;

@@ -4,13 +4,24 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@/src/shared/ui/Button/button";
 import { Field, FieldGroup, FieldLabel } from "@/src/shared/ui/Fields/field";
 import { Input } from "@/src/shared/ui/Input/input";
-import { FormSchema, formSchema } from "@/src/shared/config/zod_schema";
+import {
+  // FormSchema,
+  FormSchemaLogin,
+  // formSchema,
+  loginSchema,
+} from "@/src/shared/config/zod_schema";
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "@/src/shared/lib/auth";
+import { loginAction } from "@/src/shared/lib/actions";
+// import { auth } from "@/src/shared/lib/auth";
+// import { redirect } from "next/navigation";
 
 // TODO: декомпозировать и поменять язык
 
 const LoginPage = () => {
+  // const session = await auth();
+  // if (session) redirect("/");
   const {
     register,
     handleSubmit,
@@ -18,11 +29,12 @@ const LoginPage = () => {
     setFocus,
     formState: { isDirty, isSubmitting, errors },
   } = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit: SubmitHandler<FormSchema> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FormSchemaLogin> = async (data) => {
+    console.log("click");
+    await loginAction(data);
     reset();
   };
 
@@ -70,16 +82,15 @@ const LoginPage = () => {
               </span>
             )}
           </Field>
-
-          <Field>
-            <Button // блокируем кнопку
-              disabled={!isDirty || isSubmitting}
-              type="submit"
-            >
-              Login in
-            </Button>
-          </Field>
         </FieldGroup>
+        <Field>
+          <Button // блокируем кнопку
+            disabled={!isDirty || isSubmitting}
+            type="submit"
+          >
+            Log in
+          </Button>
+        </Field>
       </form>
     </>
   );

@@ -24,6 +24,7 @@ const RegisterPage = () => {
   });
 
   const onSubmit: SubmitHandler<FormSchema> = async (data) => {
+    console.log("click");
     const res = await registerApi(data);
     console.log(res);
     reset();
