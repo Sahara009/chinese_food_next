@@ -1,34 +1,24 @@
-"use client";
-
 import { Avatar, AvatarFallback } from "@/src/shared/ui/Avatar/avatar";
 import { Button } from "@/src/shared/ui/Button/button";
 import Link from "next/link";
 import logo from "../../app/favicon.ico";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { links } from "@/src/shared/config/constants.config";
+import { auth } from "@/src/shared/lib/auth";
+import { logoutAction } from "@/src/shared/lib/actions";
+import { headers } from "next/headers";
 
-type User = {
-  name: string;
-};
-
-type Props = {
-  user: User | null;
-};
-console.log(process.env.DATABASE_URL);
-export function Header({ user }: Props) {
-  const pathname = usePathname();
-
-  // const session = await auth();
-  // if (session) redirect("/auth/login");
+export async function Header() {
+  const session = await auth();
+  const user = session?.user;
+  const headersList = await headers();
+  const pathname = headersList.get("x-invoke-path") || "/";
 
   return (
     <header className="border-b">
       <div className="mx-auto max-w-6xl flex items-center justify-between p-4">
         {/* ЛОГО */}
-
         <Link href={"/"} className="font-bold flex items-center gap-2">
-          {/* priority - означает что должен загрузить первым еще до разметки */}
           <Image src={logo} alt="logotype" width={28} height={28} priority />
           <h1 className="text-primary">Chim-Chim</h1>
         </Link>
@@ -40,7 +30,7 @@ export function Header({ user }: Props) {
               <Link
                 className={
                   link.href === pathname
-                    ? "text-primary  underline underline-offset-5"
+                    ? "text-primary underline underline-offset-5"
                     : "text-muted-foreground"
                 }
                 key={link.href}
@@ -55,11 +45,23 @@ export function Header({ user }: Props) {
         {/* ПРАВАЯ ЧАСТЬ */}
         <div>
           {user ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <Avatar>
-                <AvatarFallback>{user.name[0]}</AvatarFallback>
+                <AvatarFallback>
+                  {user.name ? user.name[0] : user.email?.[0] ?? "U"}
+                </AvatarFallback>
               </Avatar>
-              <span>{user.name}</span>
+              <div className="flex flex-col text-sm">
+                {user.name && <span className="font-medium">{user.name}</span>}
+                {user.email && (
+                  <span className="text-muted-foreground">{user.email}</span>
+                )}
+              </div>
+              <form action={logoutAction}>
+                <Button variant="outline" size="sm" type="submit">
+                  Sign out
+                </Button>
+              </form>
             </div>
           ) : (
             <div className="flex gap-2">

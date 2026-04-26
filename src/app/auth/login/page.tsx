@@ -4,24 +4,16 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@/src/shared/ui/Button/button";
 import { Field, FieldGroup, FieldLabel } from "@/src/shared/ui/Fields/field";
 import { Input } from "@/src/shared/ui/Input/input";
-import {
-  // FormSchema,
-  FormSchemaLogin,
-  // formSchema,
-  loginSchema,
-} from "@/src/shared/config/zod_schema";
-import { useEffect } from "react";
+import { FormSchemaLogin, loginSchema } from "@/src/shared/config/zod_schema";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "@/src/shared/lib/auth";
 import { loginAction } from "@/src/shared/lib/actions";
-// import { auth } from "@/src/shared/lib/auth";
-// import { redirect } from "next/navigation";
 
 // TODO: декомпозировать и поменять язык
 
 const LoginPage = () => {
-  // const session = await auth();
-  // if (session) redirect("/");
+  const [serverError, setServerError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -33,15 +25,16 @@ const LoginPage = () => {
   });
 
   const onSubmit: SubmitHandler<FormSchemaLogin> = async (data) => {
-    console.log("click");
-    await loginAction(data);
-    reset();
+    setServerError(null);
+    const res = await loginAction(data);
+    if (res && "error" in res) {
+      setServerError(res.error);
+    }
   };
 
   useEffect(() => {
-    // устанавливаем фокус на первое поле (имя пользователя) после монтирования компонента
     setFocus("email");
-  }, []);
+  }, [setFocus]);
 
   return (
     <>
@@ -83,11 +76,13 @@ const LoginPage = () => {
             )}
           </Field>
         </FieldGroup>
+        {serverError && (
+          <span role="alert" className="error">
+            {serverError}
+          </span>
+        )}
         <Field>
-          <Button // блокируем кнопку
-            disabled={!isDirty || isSubmitting}
-            type="submit"
-          >
+          <Button disabled={!isDirty || isSubmitting} type="submit">
             Log in
           </Button>
         </Field>

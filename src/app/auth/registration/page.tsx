@@ -5,14 +5,17 @@ import { Button } from "@/src/shared/ui/Button/button";
 import { Field, FieldGroup, FieldLabel } from "@/src/shared/ui/Fields/field";
 import { Input } from "@/src/shared/ui/Input/input";
 import { FormSchema, formSchema } from "@/src/shared/config/zod_schema";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerApi } from "@/src/features/auth/register";
-// import { prisma } from "@/src/shared/utils/prisma";
 
 // TODO: декомпозировать и поменять язык
 
 const RegisterPage = () => {
+  const router = useRouter();
+  const [serverError, setServerError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -24,16 +27,19 @@ const RegisterPage = () => {
   });
 
   const onSubmit: SubmitHandler<FormSchema> = async (data) => {
-    console.log("click");
+    setServerError(null);
     const res = await registerApi(data);
-    console.log(res);
-    reset();
+    if (res && "error" in res && res.error) {
+      setServerError(res.error);
+    } else {
+      reset();
+      router.push("/auth/login");
+    }
   };
 
   useEffect(() => {
-    // устанавливаем фокус на первое поле (имя пользователя) после монтирования компонента
     setFocus("email");
-  }, []);
+  }, [setFocus]);
 
   return (
     <>
@@ -91,11 +97,13 @@ const RegisterPage = () => {
               </span>
             )}
           </Field>
+          {serverError && (
+            <span role="alert" className="error">
+              {serverError}
+            </span>
+          )}
           <Field>
-            <Button // блокируем кнопку
-              disabled={!isDirty || isSubmitting}
-              type="submit"
-            >
+            <Button disabled={!isDirty || isSubmitting} type="submit">
               Sign up
             </Button>
           </Field>
