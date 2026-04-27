@@ -2,7 +2,7 @@
 
 import { prisma } from "@/server/prisma";
 import { ingredientSchema } from "@/src/shared/config/zod_schema";
-import { ZodError, success } from "zod";
+import { ZodError } from "zod";
 
 export async function createRecipe(formData: FormData) {
   try {
@@ -32,8 +32,33 @@ export async function createRecipe(formData: FormData) {
     return { success: true, ingredient };
   } catch (error) {
     if (error instanceof ZodError) {
-      return { error: error.errors.map((e) => e.message).join(", ") };
+      return { error: error.issues.map((e) => e.message).join(", ") };
     }
     console.log("Ошибка при создании рецепта");
+  }
+}
+
+export async function getAllRecipes() {
+  try {
+    const ingredients = await prisma.ingredient.findMany();
+    return { success: true, ingredients };
+  } catch (error) {
+    console.log(error);
+    return { error: "Ошибка при получении рецептов" };
+  }
+}
+
+export async function deleteRecipe(id: string) {
+  try {
+    const ingredient = await prisma.ingredient.delete({
+      where: {
+        id,
+      },
+    });
+
+    return { success: true, ingredient };
+  } catch (error) {
+    console.log(error);
+    return { error: "Ошибка при удалении рецепта" };
   }
 }

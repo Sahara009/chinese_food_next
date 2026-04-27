@@ -1,4 +1,4 @@
-import { number, object, string, z } from "zod";
+import { object, string, z } from "zod";
 
 export const formSchema = z
   // данные формы - объект
@@ -54,8 +54,6 @@ export const ingredientSchema = object({
     "PIECE",
     "PINCH",
   ]),
-  pricePerUnit: number({ invalid_type_error: "Цена должна быть числом" })
-    .min(0, "Цена должна быть больше 0")
-    .nullable(),
+  pricePerUnit: z.number().min(0, "Цена должна быть больше 0").nullable(),
   description: z.string(),
 });
