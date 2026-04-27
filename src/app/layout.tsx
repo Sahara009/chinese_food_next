@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Header } from "../widgets/Header/Header";
 import Footer from "../widgets/Footer/Footer";
+import { Toaster } from "sonner";
 
 const geistHeading = Geist({ subsets: ["latin"], variable: "--font-heading" });
 
@@ -46,6 +47,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <Header />
         <main> {children}</main>
+        <Toaster />
         <Footer />
       </body>
     </html>

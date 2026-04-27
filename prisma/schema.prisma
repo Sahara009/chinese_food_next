@@ -53,6 +53,50 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
+model Ingredient {
+  id           String   @id @default(cuid())
+  name         String?
+  category     Category
+  unit         Unit
+  pricePerUnit Float?
+  description  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Category {
+  VEGETABLES
+  MEAT
+  CHICKEN
+  SEAFOOD
+  NOODLES
+  RICE
+  DUMPLINGS
+  SOUPS
+  STREET_FOOD
+  SPICY
+  DESSERTS
+  SAUCES
+  TOFU
+  VEGAN
+  SICHUAN
+  CANTONESE
+  BEIJING
+}
+
+enum Unit {
+  GRAM
+  KILOGRAM
+  MILLILITER
+  LITER
+  TEASPOON
+  TABLESPOON
+  CUP
+  PIECE
+  PINCH
+}
+
 model Account {
   userId            String
   type              String

@@ -1,0 +1,31 @@
+export const CATEGORY_OPTIONS = [
+  { value: "VEGETABLES", label: "Vegetables 🥦" },
+  { value: "MEAT", label: "Meat 🍖" },
+  { value: "CHICKEN", label: "Chicken 🍗" },
+  { value: "SEAFOOD", label: "Seafood 🦐" },
+  { value: "NOODLES", label: "Noodles 🍜" },
+  { value: "RICE", label: "Rice 🍚" },
+  { value: "DUMPLINGS", label: "Dumplings / Dim Sum 🥟" },
+  { value: "SOUPS", label: "Soups 🍲" },
+  { value: "STREET_FOOD", label: "Street Food 🥡" },
+  { value: "SPICY", label: "Spicy 🌶️" },
+  { value: "DESSERTS", label: "Desserts 🍡" },
+  { value: "SAUCES", label: "Sauces 🥢" },
+  { value: "TOFU", label: "Tofu 🧊" },
+  { value: "VEGAN", label: "Vegan 🌱" },
+  { value: "SICHUAN", label: "Sichuan Cuisine 🌶️" },
+  { value: "CANTONESE", label: "Cantonese Cuisine 🥢" },
+  { value: "BEIJING", label: "Beijing Cuisine 🦆" },
+] as const;
+
+export const UNIT_OPTIONS = [
+  { value: "GRAM", label: "Grams (g)" },
+  { value: "KILOGRAM", label: "Kilograms (kg)" },
+  { value: "MILLILITER", label: "Milliliters (ml)" },
+  { value: "LITER", label: "Liters (l)" },
+  { value: "TEASPOON", label: "Teaspoons (tsp)" },
+  { value: "TABLESPOON", label: "Tablespoons (tbsp)" },
+  { value: "CUP", label: "Cups" },
+  { value: "PIECE", label: "Pieces" },
+  { value: "PINCH", label: "Pinch" },
+] as const;
