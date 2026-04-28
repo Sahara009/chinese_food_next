@@ -5,9 +5,9 @@ import {
   UNIT_OPTIONS,
 } from "@/src/shared/constants/select-ingredients";
 import { Button } from "@/src/shared/ui/Button/button";
+import { useRecipesStore } from "@/src/shared/store/recipesStore";
 import { useState, useTransition } from "react";
 import { createRecipe } from "../actions/ingredients";
-import { string } from "zod";
 import { toast } from "sonner";
 // import { CATEGORY_OPTIONS } from "@/src/shared/constants/categories";
 // import { UNIT_OPTIONS } from "@/src/shared/constants/units";
@@ -15,6 +15,7 @@ import { toast } from "sonner";
 export const RecipeForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const { loadUserRecipes } = useRecipesStore();
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -40,6 +41,7 @@ export const RecipeForm = () => {
       } else {
         setError(null);
         toast.success("Ingredient successfully added ✅");
+        loadUserRecipes();
         setForm({
           name: "",
           description: "",
@@ -66,6 +68,7 @@ export const RecipeForm = () => {
           value={form.name}
           onChange={handleChange}
           placeholder="Kung Pao Chicken"
+          required
           className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
         />
       </div>
@@ -89,6 +92,7 @@ export const RecipeForm = () => {
           name="category"
           value={form.category}
           onChange={handleChange}
+          required
           className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
         >
           <option value="">Select category</option>
@@ -107,6 +111,7 @@ export const RecipeForm = () => {
           name="unit"
           value={form.unit}
           onChange={handleChange}
+          required
           className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
         >
           <option value="">Select unit</option>
@@ -124,6 +129,8 @@ export const RecipeForm = () => {
         <input
           name="pricePerUnit"
           type="number"
+          min={0}
+          step="0.01"
           value={form.pricePerUnit}
           onChange={handleChange}
           placeholder="5.99"

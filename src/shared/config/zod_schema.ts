@@ -54,6 +54,10 @@ export const ingredientSchema = object({
     "PIECE",
     "PINCH",
   ]),
-  pricePerUnit: z.number().min(0, "Цена должна быть больше 0").nullable(),
+  pricePerUnit: z
+    .number()
+    .min(0, "Цена должна быть больше 0")
+    .nullable()
+    .optional(),
   description: z.string(),
 });
